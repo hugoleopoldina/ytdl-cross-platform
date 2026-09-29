@@ -18,7 +18,7 @@ Este é um projeto em desenvolvimento de um aplicativo Android, criado em Python
 + Linux
 
 # Requisitos de execução:
-+ Python 3
++ Python < 3.10
 + KivyMD (1.2.0.dev0)
 + Kivy (2.2.0.dev0)
 + Youtube-Search-Python
