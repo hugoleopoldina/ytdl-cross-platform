@@ -1,0 +1,198 @@
+<EntryRow>:
+    orientation: "horizontal"
+    size_hint_y: None
+    height: dp(64)
+    padding: dp(4), dp(4)
+    spacing: dp(10)
+    MDCheckbox:
+        active: root.selected
+        on_active: root.selected = self.active
+        size_hint: None, None
+        size: dp(40), dp(40)
+        pos_hint: {"center_y": .5}
+    FitImage:
+        source: root.thumbnail
+        size_hint: None, None
+        size: dp(88), dp(50)
+        pos_hint: {"center_y": .5}
+        radius: [dp(8)]
+    MDBoxLayout:
+        orientation: "vertical"
+        MDLabel:
+            text: root.title
+            font_style: "Body"
+            role: "medium"
+            max_lines: 2
+            shorten: True
+            shorten_from: "right"
+            theme_font_name: "Custom"
+            font_name: app.content_font
+        MDLabel:
+            text: root.meta
+            font_style: "Label"
+            role: "medium"
+            size_hint_y: None
+            height: dp(20)
+            theme_text_color: "Custom"
+            text_color: app.theme_cls.onSurfaceVariantColor
+
+<DetailScreen>:
+    name: "detail"
+    md_bg_color: app.theme_cls.backgroundColor
+    MDBoxLayout:
+        orientation: "vertical"
+        MDTopAppBar:
+            type: "small"
+            MDTopAppBarLeadingButtonContainer:
+                MDActionTopAppBarButton:
+                    icon: "arrow-left"
+                    on_release: app.go_back()
+            MDTopAppBarTitle:
+                text: app.tr("detail_title")
+        MDScrollView:
+            do_scroll_x: False
+            MDBoxLayout:
+                orientation: "vertical"
+                adaptive_height: True
+                Column:
+                    orientation: "vertical"
+                    adaptive_height: True
+                    padding: dp(16)
+                    spacing: dp(14)
+                    MDRelativeLayout:
+                        size_hint_y: None
+                        height: self.width * 9 / 16
+                        md_bg_color: app.theme_cls.surfaceContainerHighestColor
+                        radius: [dp(20)]
+                        FitImage:
+                            source: root.thumbnail
+                            size_hint: 1, 1
+                            radius: [dp(20)]
+                        MDLabel:
+                            text: root.duration_text
+                            opacity: 1 if root.duration_text else 0
+                            adaptive_size: True
+                            padding: dp(8), dp(3)
+                            pos_hint: {"right": .97, "y": .05}
+                            md_bg_color: 0, 0, 0, .78
+                            radius: [dp(6)]
+                            font_style: "Label"
+                            role: "large"
+                            theme_text_color: "Custom"
+                            text_color: 1, 1, 1, 1
+                        MDLabel:
+                            text: root.kind_text
+                            opacity: 1 if root.show_kind else 0
+                            adaptive_size: True
+                            padding: dp(10), dp(4)
+                            pos_hint: {"x": .03, "top": .94}
+                            md_bg_color: (.85, .1, .1, 1) if root.is_live else app.theme_cls.primaryContainerColor
+                            radius: [dp(8)]
+                            font_style: "Label"
+                            role: "large"
+                            theme_text_color: "Custom"
+                            text_color: (1, 1, 1, 1) if root.is_live else app.theme_cls.onPrimaryContainerColor
+                    MDLabel:
+                        text: root.title
+                        font_style: "Title"
+                        role: "large"
+                        adaptive_height: True
+                        theme_font_name: "Custom"
+                        font_name: app.content_font
+                    MDLabel:
+                        text: root.subtitle
+                        font_style: "Body"
+                        role: "medium"
+                        adaptive_height: True
+                        theme_text_color: "Custom"
+                        text_color: app.theme_cls.onSurfaceVariantColor
+                        theme_font_name: "Custom"
+                        font_name: app.content_font
+                    # Carregamento: indeterminado enquanto busca; determinado ao montar linhas
+                    MDBoxLayout:
+                        orientation: "vertical"
+                        size_hint_y: None
+                        height: dp(34) if root.loading else 0
+                        opacity: 1 if root.loading else 0
+                        spacing: dp(6)
+                        MDLabel:
+                            text: app.tr("formats_loading") if root.build_fraction < 0 else app.tr("loading_building") + "  " + str(int(max(root.build_fraction, 0) * 100)) + "%"
+                            font_style: "Label"
+                            role: "large"
+                            size_hint_y: None
+                            height: dp(20)
+                        MDRelativeLayout:
+                            size_hint_y: None
+                            height: dp(6)
+                            MDLinearProgressIndicator:
+                                id: det_bar
+                                type: "determinate"
+                                size_hint_x: 1
+                                value: max(root.build_fraction, 0) * 100
+                                opacity: 1 if root.build_fraction >= 0 else 0
+                                pos_hint: {"center_y": .5}
+                            MDLinearProgressIndicator:
+                                id: indet_bar
+                                type: "indeterminate"
+                                size_hint_x: 1
+                                opacity: 1 if root.build_fraction < 0 else 0
+                                pos_hint: {"center_y": .5}
+                    MDBoxLayout:
+                        size_hint_y: None
+                        height: dp(48)
+                        spacing: dp(10)
+                        MDButton:
+                            style: "filled"
+                            disabled: not root.can_download
+                            on_release: root.on_download()
+                            MDButtonIcon:
+                                icon: "download"
+                            MDButtonText:
+                                text: app.tr("download_selected") if root.is_playlist else app.tr("download")
+                        MDButton:
+                            style: "tonal"
+                            on_release: root.open_in_browser()
+                            MDButtonIcon:
+                                icon: "open-in-new"
+                            MDButtonText:
+                                text: app.tr("open_browser")
+                        MDWidget:
+                    MDBoxLayout:
+                        size_hint_y: None
+                        height: dp(40) if root.failed else 0
+                        opacity: 1 if root.failed else 0
+                        MDButton:
+                            style: "outlined"
+                            on_release: root.fetch()
+                            MDButtonIcon:
+                                icon: "refresh"
+                            MDButtonText:
+                                text: app.tr("retry")
+                    MDLabel:
+                        text: app.tr("live_unsupported")
+                        opacity: 1 if root.is_live else 0
+                        height: self.texture_size[1] if root.is_live else 0
+                        size_hint_y: None
+                        font_style: "Body"
+                        role: "medium"
+                        theme_text_color: "Custom"
+                        text_color: app.theme_cls.errorColor
+                    MDBoxLayout:
+                        size_hint_y: None
+                        height: dp(44) if root.is_playlist else 0
+                        opacity: 1 if root.is_playlist else 0
+                        MDButton:
+                            style: "text"
+                            on_release: root.toggle_all()
+                            MDButtonText:
+                                text: app.tr("select_all")
+                        MDLabel:
+                            text: app.tr("selected_n", n=int(root.selected_count))
+                            halign: "right"
+                            font_style: "Label"
+                            role: "large"
+                    MDBoxLayout:
+                        id: entries_box
+                        orientation: "vertical"
+                        adaptive_height: True
+                        spacing: dp(4)

@@ -1,0 +1,4 @@
+# Desenvolvimento e empacotamento (desktop). Python 3.11.
+-r requirements.txt
+pyinstaller>=6.11
+pytest>=8

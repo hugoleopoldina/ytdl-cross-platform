@@ -1,0 +1,36 @@
+<LogsScreen>:
+    name: "logs"
+    md_bg_color: app.theme_cls.backgroundColor
+    MDBoxLayout:
+        orientation: "vertical"
+        MDTopAppBar:
+            type: "small"
+            MDTopAppBarLeadingButtonContainer:
+                MDActionTopAppBarButton:
+                    icon: "arrow-left"
+                    on_release: app.go_back()
+            MDTopAppBarTitle:
+                text: app.tr("logs_title")
+            MDTopAppBarTrailingButtonContainer:
+                MDActionTopAppBarButton:
+                    icon: "refresh"
+                    on_release: root.refresh()
+                MDActionTopAppBarButton:
+                    icon: "content-copy"
+                    on_release: root.copy()
+                MDActionTopAppBarButton:
+                    icon: "delete-outline"
+                    on_release: root.clear()
+        MDScrollView:
+            do_scroll_x: True
+            bar_width: dp(4)
+            Label:
+                text: root.text
+                font_name: "RobotoMono-Regular"
+                font_size: "11sp"
+                color: app.theme_cls.onSurfaceColor
+                size_hint: None, None
+                size: self.texture_size
+                padding: dp(10), dp(10)
+                halign: "left"
+                valign: "top"

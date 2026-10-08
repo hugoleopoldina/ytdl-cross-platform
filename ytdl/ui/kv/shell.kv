@@ -1,0 +1,39 @@
+<NavItem>:
+    MDNavigationItemIcon:
+        icon: root.icon
+    MDNavigationItemLabel:
+        text: root.text
+
+<Shell>:
+    orientation: "vertical"
+    md_bg_color: app.theme_cls.backgroundColor
+    MDScreenManager:
+        id: pages
+        SearchScreen:
+        DetailScreen:
+        DownloadsScreen:
+        SettingsScreen:
+        LogsScreen:
+    # Barra fina global: progresso agregado dos downloads ativos.
+    MDLinearProgressIndicator:
+        type: "determinate"
+        value: app.global_progress * 100
+        size_hint_y: None
+        height: dp(3) if app.downloads_active else 0
+        opacity: 1 if app.downloads_active else 0
+    MDNavigationBar:
+        id: nav
+        on_switch_tabs: app.on_switch_tabs(*args)
+        NavItem:
+            target: "search"
+            icon: "magnify"
+            text: app.tr("nav_search")
+            active: True
+        NavItem:
+            target: "downloads"
+            icon: "download"
+            text: app.tr("nav_downloads")
+        NavItem:
+            target: "settings"
+            icon: "cog-outline"
+            text: app.tr("nav_settings")

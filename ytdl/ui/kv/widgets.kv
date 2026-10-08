@@ -1,0 +1,242 @@
+# Widgets reutilizáveis.  Carregado por ytdl/app.py ANTES das telas.
+# Sintaxe KivyMD 2.x (M3): MDButton + MDButtonText, MDLabel com font_style/role, etc.
+
+<EmptyState>:
+    orientation: "vertical"
+    adaptive_height: True
+    spacing: dp(8)
+    padding: dp(24), dp(48), dp(24), dp(24)
+    pos_hint: {"center_x": .5}
+    MDIcon:
+        icon: root.icon
+        font_size: "72sp"
+        pos_hint: {"center_x": .5}
+        theme_text_color: "Custom"
+        text_color: app.theme_cls.outlineColor
+    MDLabel:
+        text: root.title
+        halign: "center"
+        font_style: "Title"
+        role: "medium"
+        adaptive_height: True
+    MDLabel:
+        text: root.subtitle
+        halign: "center"
+        font_style: "Body"
+        role: "medium"
+        adaptive_height: True
+        theme_text_color: "Custom"
+        text_color: app.theme_cls.onSurfaceVariantColor
+
+# Coluna central com largura máxima: em janelas largas (desktop) o conteúdo
+# não estica até as bordas.
+<Column@MDBoxLayout>:
+    size_hint_x: None
+    width: min(self.parent.width if self.parent else dp(640), dp(640))
+    pos_hint: {"center_x": .5}
+
+<MediaCard>:
+    style: "elevated"
+    orientation: "vertical"
+    size_hint_y: None
+    height: self.width * 9 / 16 + dp(92)
+    padding: 0
+    radius: [dp(16)]
+    ripple_behavior: True
+    MDRelativeLayout:
+        size_hint_y: None
+        height: root.width * 9 / 16
+        md_bg_color: app.theme_cls.surfaceContainerHighestColor
+        radius: [dp(16), dp(16), 0, 0]
+        FitImage:
+            source: root.thumbnail
+            size_hint: 1, 1
+            radius: [dp(16), dp(16), 0, 0]
+        MDLabel:
+            text: root.duration_text
+            opacity: 1 if root.duration_text else 0
+            adaptive_size: True
+            padding: dp(6), dp(2)
+            pos_hint: {"right": .97, "y": .04}
+            md_bg_color: 0, 0, 0, .78
+            radius: [dp(4)]
+            font_style: "Label"
+            role: "medium"
+            theme_text_color: "Custom"
+            text_color: 1, 1, 1, 1
+        MDLabel:
+            text: root.kind_text
+            opacity: 1 if root.show_kind else 0
+            adaptive_size: True
+            padding: dp(8), dp(3)
+            pos_hint: {"x": .03, "top": .95}
+            md_bg_color: (.85, .1, .1, 1) if root.is_live else app.theme_cls.primaryContainerColor
+            radius: [dp(6)]
+            font_style: "Label"
+            role: "medium"
+            theme_text_color: "Custom"
+            text_color: (1, 1, 1, 1) if root.is_live else app.theme_cls.onPrimaryContainerColor
+    MDBoxLayout:
+        orientation: "vertical"
+        padding: dp(12), dp(8), dp(12), dp(8)
+        spacing: dp(2)
+        MDLabel:
+            text: root.title
+            font_style: "Title"
+            role: "small"
+            max_lines: 2
+            shorten: True
+            shorten_from: "right"
+            theme_font_name: "Custom"
+            font_name: app.content_font
+        MDLabel:
+            text: root.subtitle
+            font_style: "Body"
+            role: "small"
+            max_lines: 1
+            shorten: True
+            shorten_from: "right"
+            size_hint_y: None
+            height: self.texture_size[1] + dp(4)
+            theme_text_color: "Custom"
+            text_color: app.theme_cls.onSurfaceVariantColor
+            theme_font_name: "Custom"
+            font_name: app.content_font
+
+<LoadingOverlay>:
+    size_hint: .88, None
+    size_hint_max_x: dp(380)
+    height: dp(190)
+    auto_dismiss: False
+    background: ""
+    background_color: 0, 0, 0, 0
+    overlay_color: 0, 0, 0, .55
+    MDCard:
+        style: "filled"
+        orientation: "vertical"
+        padding: dp(20)
+        spacing: dp(12)
+        radius: [dp(24)]
+        MDLabel:
+            text: root.title
+            font_style: "Title"
+            role: "medium"
+            adaptive_height: True
+        MDRelativeLayout:
+            size_hint_y: None
+            height: dp(6)
+            MDLinearProgressIndicator:
+                id: indet_bar
+                type: "indeterminate"
+                size_hint_x: 1
+                opacity: 1 if root.indeterminate else 0
+                pos_hint: {"center_y": .5}
+            MDLinearProgressIndicator:
+                id: det_bar
+                type: "determinate"
+                size_hint_x: 1
+                value: 0
+                opacity: 0 if root.indeterminate else 1
+                pos_hint: {"center_y": .5}
+        MDBoxLayout:
+            size_hint_y: None
+            height: dp(24)
+            MDLabel:
+                text: root.detail
+                font_style: "Body"
+                role: "medium"
+                theme_text_color: "Custom"
+                text_color: app.theme_cls.onSurfaceVariantColor
+            MDLabel:
+                text: root.percent_text
+                halign: "right"
+                font_style: "Label"
+                role: "large"
+        MDBoxLayout:
+            MDWidget:
+            MDButton:
+                style: "text"
+                opacity: 1 if root.cancellable else 0
+                disabled: not root.cancellable
+                on_release: root.cancel()
+                MDButtonText:
+                    text: app.tr("cancel")
+
+<DownloadItem>:
+    style: "elevated"
+    orientation: "horizontal"
+    size_hint_y: None
+    height: dp(104)
+    padding: dp(10)
+    spacing: dp(10)
+    radius: [dp(16)]
+    FitImage:
+        source: root.thumbnail
+        size_hint: None, None
+        size: dp(96), dp(54)
+        pos_hint: {"center_y": .5}
+        radius: [dp(8)]
+    MDBoxLayout:
+        orientation: "vertical"
+        spacing: dp(4)
+        MDLabel:
+            text: root.title
+            font_style: "Body"
+            role: "medium"
+            max_lines: 2
+            shorten: True
+            shorten_from: "right"
+            theme_font_name: "Custom"
+            font_name: app.content_font
+        MDLabel:
+            text: root.status_text
+            font_style: "Label"
+            role: "medium"
+            max_lines: 2
+            size_hint_y: None
+            height: dp(32)
+            theme_text_color: "Custom"
+            text_color: root.status_color
+        MDRelativeLayout:
+            size_hint_y: None
+            height: dp(6) if root.show_bar else 0
+            opacity: 1 if root.show_bar else 0
+            MDLinearProgressIndicator:
+                id: indet
+                type: "indeterminate"
+                size_hint_x: 1
+                opacity: 1 if root.indeterminate else 0
+                pos_hint: {"center_y": .5}
+            MDLinearProgressIndicator:
+                type: "determinate"
+                size_hint_x: 1
+                value: root.value
+                opacity: 0 if root.indeterminate else 1
+                pos_hint: {"center_y": .5}
+    MDBoxLayout:
+        orientation: "vertical"
+        size_hint_x: None
+        width: dp(44)
+        MDIconButton:
+            icon: root.primary_icon
+            disabled: not root.primary_enabled
+            on_release: root.on_primary()
+        MDIconButton:
+            icon: "delete-outline"
+            opacity: 1 if root.can_remove else 0
+            disabled: not root.can_remove
+            on_release: root.on_remove()
+
+<FormatRow>:
+    theme_bg_color: "Custom"
+    md_bg_color: app.theme_cls.secondaryContainerColor if root.selected else app.theme_cls.transparentColor
+    radius: [dp(12)]
+    opacity: .45 if root.unavailable else 1
+    MDListItemLeadingIcon:
+        icon: root.icon
+    MDListItemHeadlineText:
+        text: root.headline
+    MDListItemSupportingText:
+        text: root.supporting
+    MDListItemTrailingIcon:
+        icon: "check-circle" if root.selected else "circle-outline"

@@ -1,9 +1,24 @@
-kivy==2.2.0.dev0
-pillow
-https://github.com/KivyMD/KivyMD/archive/master.zip
-watchdog
-pytube
-httpx
-youtube-search-python
-mutagen
-plyer
+# =============================================================================
+# Dependências de EXECUÇÃO - desktop (Linux / Windows 10 e 11 / macOS)
+# Python recomendado: 3.11  (aceito: 3.10 a 3.13).  NÃO use 3.14: o Kivy 2.3.1
+# ainda não publica wheels para ele. Windows 7 usa outro arquivo:
+# requirements-win7.txt
+#
+# Instalação:  pip install -r requirements.txt
+# =============================================================================
+
+# Interface. Versões ESTÁVEIS do PyPI (o projeto antigo usava branches .dev do git).
+kivy==2.3.1
+kivymd==2.0.0
+
+# Motor de busca/download. Mantenha atualizado: o YouTube muda toda semana e o
+# yt-dlp acompanha. O extra [default] traz: certifi, mutagen, brotli, requests,
+# websockets, pycryptodomex e o yt-dlp-ejs (resolve os desafios JS do YouTube).
+# 2025.11.12 é a primeira versão que exige/usa o runtime JavaScript (EJS).
+# Testado com yt-dlp 2026.8.19.
+yt-dlp[default]>=2025.11.12
+
+# Capas/tags de áudio e miniaturas (o KivyMD também exige o pillow).
+mutagen>=1.47
+pillow>=10.4
+certifi

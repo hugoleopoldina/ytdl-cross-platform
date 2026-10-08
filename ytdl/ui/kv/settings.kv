@@ -1,0 +1,122 @@
+<SectionTitle@MDLabel>:
+    font_style: "Title"
+    role: "small"
+    adaptive_height: True
+    padding: dp(4), dp(12), 0, dp(2)
+    theme_text_color: "Custom"
+    text_color: app.theme_cls.primaryColor
+
+<InfoRow@MDListItem>:
+    headline: ""
+    supporting: ""
+    theme_bg_color: "Custom"
+    md_bg_color: app.theme_cls.transparentColor
+    MDListItemHeadlineText:
+        text: root.headline
+    MDListItemSupportingText:
+        text: root.supporting
+
+<SettingsScreen>:
+    name: "settings"
+    md_bg_color: app.theme_cls.backgroundColor
+    MDBoxLayout:
+        orientation: "vertical"
+        MDTopAppBar:
+            type: "small"
+            MDTopAppBarTitle:
+                text: app.tr("settings_title")
+        MDScrollView:
+            do_scroll_x: False
+            MDBoxLayout:
+                orientation: "vertical"
+                adaptive_height: True
+                Column:
+                    orientation: "vertical"
+                    adaptive_height: True
+                    padding: dp(12)
+                    spacing: dp(4)
+                    SectionTitle:
+                        text: app.tr("sec_appearance")
+                    MDListItem:
+                        theme_bg_color: "Custom"
+                        md_bg_color: app.theme_cls.transparentColor
+                        MDListItemHeadlineText:
+                            text: app.tr("dark_theme")
+                        MDSwitch:
+                            active: root.dark
+                            on_active: root.set_dark(self.active)
+                            pos_hint: {"center_y": .5}
+                    MDBoxLayout:
+                        orientation: "vertical"
+                        adaptive_height: True
+                        padding: dp(16), dp(8)
+                        spacing: dp(4)
+                        MDLabel:
+                            text: app.tr("accent_color")
+                            font_style: "Body"
+                            role: "large"
+                            adaptive_height: True
+                        MDBoxLayout:
+                            id: swatches
+                            adaptive_height: True
+                            spacing: dp(2)
+                    SectionTitle:
+                        text: app.tr("sec_downloads")
+                    MDListItem:
+                        theme_bg_color: "Custom"
+                        md_bg_color: app.theme_cls.transparentColor
+                        MDListItemHeadlineText:
+                            text: app.tr("parallel")
+                        MDBoxLayout:
+                            adaptive_size: True
+                            pos_hint: {"center_y": .5}
+                            MDIconButton:
+                                icon: "minus"
+                                on_release: root.change_parallel(-1)
+                            MDLabel:
+                                text: str(int(root.parallel))
+                                adaptive_size: True
+                                pos_hint: {"center_y": .5}
+                                font_style: "Title"
+                                role: "medium"
+                            MDIconButton:
+                                icon: "plus"
+                                on_release: root.change_parallel(1)
+                    MDListItem:
+                        theme_bg_color: "Custom"
+                        md_bg_color: app.theme_cls.transparentColor
+                        MDListItemHeadlineText:
+                            text: app.tr("embed_meta")
+                        MDSwitch:
+                            active: root.embed_meta
+                            on_active: root.set_embed(self.active)
+                            pos_hint: {"center_y": .5}
+                    InfoRow:
+                        headline: app.tr("output_folder")
+                        supporting: root.output_text
+                        on_release: root.open_output()
+                    SectionTitle:
+                        text: app.tr("sec_system")
+                    InfoRow:
+                        headline: "ffmpeg"
+                        supporting: root.ffmpeg_text
+                    InfoRow:
+                        headline: "JavaScript runtime"
+                        supporting: root.js_text
+                    InfoRow:
+                        headline: "yt-dlp"
+                        supporting: root.ytdlp_text
+                    InfoRow:
+                        headline: app.tr("app_version")
+                        supporting: root.app_text
+                    MDButton:
+                        style: "tonal"
+                        pos_hint: {"center_x": .5}
+                        on_release: app.navigate("logs")
+                        MDButtonIcon:
+                            icon: "text-box-outline"
+                        MDButtonText:
+                            text: app.tr("view_logs")
+                    MDWidget:
+                        size_hint_y: None
+                        height: dp(24)

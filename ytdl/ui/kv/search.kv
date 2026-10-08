@@ -1,0 +1,41 @@
+<SearchScreen>:
+    name: "search"
+    md_bg_color: app.theme_cls.backgroundColor
+    MDBoxLayout:
+        orientation: "vertical"
+        MDTopAppBar:
+            type: "small"
+            MDTopAppBarTitle:
+                text: app.tr("search_title")
+        Column:
+            orientation: "vertical"
+            padding: dp(12), dp(8), dp(12), 0
+            size_hint_y: None
+            height: dp(76)
+            spacing: dp(8)
+            MDBoxLayout:
+                spacing: dp(8)
+                MDTextField:
+                    id: field
+                    mode: "outlined"
+                    on_text_validate: root.do_search()
+                    MDTextFieldLeadingIcon:
+                        icon: "magnify"
+                    MDTextFieldHintText:
+                        text: app.tr("search_hint")
+                MDIconButton:
+                    icon: "arrow-right"
+                    style: "filled"
+                    pos_hint: {"center_y": .55}
+                    on_release: root.do_search()
+        MDScrollView:
+            do_scroll_x: False
+            MDBoxLayout:
+                orientation: "vertical"
+                adaptive_height: True
+                Column:
+                    id: results
+                    orientation: "vertical"
+                    adaptive_height: True
+                    padding: dp(12)
+                    spacing: dp(12)

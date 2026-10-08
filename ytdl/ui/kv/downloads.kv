@@ -1,0 +1,31 @@
+<DownloadsScreen>:
+    name: "downloads"
+    md_bg_color: app.theme_cls.backgroundColor
+    MDBoxLayout:
+        orientation: "vertical"
+        MDTopAppBar:
+            type: "small"
+            MDTopAppBarTitle:
+                text: app.tr("downloads_title")
+            MDTopAppBarTrailingButtonContainer:
+                MDActionTopAppBarButton:
+                    icon: "delete-sweep-outline"
+                    on_release: root.clear_finished()
+        MDScrollView:
+            do_scroll_x: False
+            MDBoxLayout:
+                orientation: "vertical"
+                adaptive_height: True
+                Column:
+                    id: empty_state
+                    orientation: "vertical"
+                    adaptive_height: True
+                    opacity: 1 if root.empty else 0
+                    height: self.minimum_height if root.empty else 0
+                    size_hint_y: None
+                Column:
+                    id: list
+                    orientation: "vertical"
+                    adaptive_height: True
+                    padding: dp(12)
+                    spacing: dp(10)
